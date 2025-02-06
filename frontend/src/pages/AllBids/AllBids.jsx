@@ -13,9 +13,8 @@ import PlaceBidModal from "./PlaceBidModal";
 function AllBids() {
   const { id } = useParams();
   const location = useLocation();
-
+  const [bidAccept, setBidAccept] = useState(false);
   const { title, description, imageSrc, ownerId, status } = location.state;
-  console.log(status);
 
   const { user } = useAuthStore();
   const [pagination, setPagination] = useState({
@@ -57,8 +56,8 @@ function AllBids() {
   const { mutate } = useMutation({
     mutationKey: ["accept-bid"],
     mutationFn: handleAcceptBid,
-    onSuccess: async (data) => {
-      console.log(data);
+    onSuccess: async () => {
+      setBidAccept(true);
       await refetch();
     },
   });
@@ -171,7 +170,9 @@ function AllBids() {
                   {user.role !== "worker" && (
                     <Button
                       type="primary"
-                      disabled={status === "pending" ? true : false}
+                      disabled={
+                        status === "pending" || bidAccept ? true : false
+                      }
                       onClick={() => {
                         mutate(item._id);
                       }}

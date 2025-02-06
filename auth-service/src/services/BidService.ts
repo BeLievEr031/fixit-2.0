@@ -11,7 +11,7 @@ class BidService {
   constructor(
     private bidRepository: typeof Bid,
     private problemRepository: typeof Problem,
-  ) {}
+  ) { }
   async placeBid(bidData: IBid) {
     return await this.bidRepository.create(bidData);
   }
